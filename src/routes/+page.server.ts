@@ -3,14 +3,13 @@ import { client} from '$lib/database';
 import type { Tunnel } from "$lib/database";
 import { generateId, isExpired } from '$lib/utils';
 
+/** @type {import('./$types').Actions} */
 export const actions = {
   create: async () => {
     const id = generateId();
 
     const conn = client.connection();
-    await conn.transaction(async (tx) => {
-      return await tx.execute("INSERT INTO tunnels (id) VALUES (?)", [id]);
-    });
+    await conn.execute("INSERT INTO tunnels (id) VALUES (?)", [id]);
 
     throw redirect(303, `/${id}`);
   },
@@ -24,7 +23,7 @@ export const actions = {
 
     const conn = client.connection();
     const results = await conn.execute("SELECT id, created FROM tunnels WHERE id = ?", [id]);
-    if (results.rows.length === 0) {
+    if (results.size === 0) {
       return fail(400, { id, incorrect: true });
     }
     
@@ -36,3 +35,5 @@ export const actions = {
     throw redirect(303, `/${tunnel.id}`);
   },
 };
+
+export const prerender = false;

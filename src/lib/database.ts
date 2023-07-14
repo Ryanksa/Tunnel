@@ -29,8 +29,8 @@ export type Tunnel = {
   | tunnel_id | varchar(6) | NO   | MUL | NULL    |                |
   +-----------+------------+------+-----+---------+----------------+
  */
-  export type Message = {
-    id: number;
-    content: string;
-    tunnel_id: string;
-  };
+export type Message = {
+  id: number;
+  content: string;
+  tunnel_id: string;
+};

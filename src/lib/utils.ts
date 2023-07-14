@@ -1,7 +1,9 @@
 import type { Tunnel } from "./database";
 
-const EXPIRY_MS = 60000;
 const ID_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+export const EXPIRY_SEC = 60;
+const EXPIRY_MS = EXPIRY_SEC * 1000;
 
 export const generateId = () => {
   let id = "";

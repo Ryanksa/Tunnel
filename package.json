@@ -24,6 +24,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@planetscale/database": "^1.8.0"
+		"@planetscale/database": "^1.8.0",
+		"iconify-icon": "^1.0.8"
 	}
 }
