@@ -1,4 +1,4 @@
-import { error, fail } from "@sveltejs/kit";
+import { error, fail, redirect } from "@sveltejs/kit";
 import { client } from "$lib/database";
 import type { Message } from "$lib/database";
 import { EXPIRY_SEC } from "$lib/utils";
@@ -43,7 +43,7 @@ export async function load({ params }) {
 }
 
 export const actions = {
-  default: async ({ request, params }) => {
+  send: async ({ request, params }) => {
     const data = await request.formData();
     const content = data.get("content")?.toString();
 
@@ -56,6 +56,12 @@ export const actions = {
       "INSERT INTO messages (content, tunnel_id) VALUES (?, ?)",
       [content, params.id]
     );
+  },
+  close: async ({ params }) => {
+    const conn = client.connection();
+    await conn.execute("DELETE FROM messages WHERE tunnel_id = ?", [params.id]);
+    await conn.execute("DELETE FROM tunnels WHERE id = ?", [params.id]);
+    throw redirect(303, "/");
   },
 };
 
