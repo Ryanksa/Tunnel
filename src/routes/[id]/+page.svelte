@@ -1,7 +1,8 @@
 <script lang="ts">
-  import type { Message } from "$lib/database";
-  import "iconify-icon";
+  import type { Message } from "$lib/server/database";
   import { onMount } from "svelte";
+  import CopyIcon from "$lib/icons/CopyIcon.svelte";
+  import XIcon from "$lib/icons/XIcon.svelte";
 
   /** @type {import('./$types').PageData} */
   export let data: {
@@ -40,7 +41,7 @@
 >
   <form method="POST" action="?/close">
     <button class="btn btn-circle absolute top-4 right-4 btn-sm sm:btn-md">
-      <iconify-icon icon="ph:x" class="text-sm sm:text-lg" />
+      <XIcon size={18} color="white" />
     </button>
   </form>
 
@@ -71,10 +72,10 @@
       >
         <p class="px-4 py-2 rounded-2xl bg-slate-300/25">{message.content}</p>
         <button
-          class="btn btn-ghost btn-square btn-sm"
+          class="btn btn-ghost btn-square btn-xs"
           on:click={() => copyToClipboard(message.content)}
         >
-          <iconify-icon icon="ant-design:copy-filled" class="text-lg" />
+          <CopyIcon size={15} color="white" />
         </button>
       </div>
     {/each}

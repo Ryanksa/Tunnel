@@ -1,7 +1,7 @@
 import { error, fail, redirect } from "@sveltejs/kit";
-import { client } from "$lib/database";
-import type { Message } from "$lib/database";
-import { EXPIRY_SEC } from "$lib/utils";
+import { client } from "$lib/server/database";
+import type { Message } from "$lib/server/database";
+import { EXPIRY_SEC } from "$lib/server/utils";
 
 /** @type {import('./$types').PageServerLoad} */
 export async function load({ params }) {

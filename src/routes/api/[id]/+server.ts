@@ -1,4 +1,4 @@
-import { client } from "$lib/database";
+import { client } from "$lib/server/database";
 
 /** @type {import('./$types').RequestHandler} */
 export async function DELETE({ params }) {
