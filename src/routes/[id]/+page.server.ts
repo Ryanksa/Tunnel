@@ -1,10 +1,11 @@
 import { error, fail, redirect } from "@sveltejs/kit";
+import type { Actions } from "@sveltejs/kit";
+import type { PageServerLoad } from "./$types.js";
 import { client } from "$lib/server/database";
 import type { Message } from "$lib/server/database";
 import { EXPIRY_SEC } from "$lib/server/utils";
 
-/** @type {import('./$types').PageServerLoad} */
-export async function load({ params }) {
+export const load = (async ({ params }) => {
   const conn = client.connection();
 
   const tunnelQuery = conn.execute(
@@ -40,9 +41,9 @@ export async function load({ params }) {
     // these messages don't have the tunnel_id field
     messages: results[1].rows as Message[],
   };
-}
+}) satisfies PageServerLoad;
 
-export const actions = {
+export const actions: Actions = {
   send: async ({ request, params }) => {
     const data = await request.formData();
     const content = data.get("content")?.toString();

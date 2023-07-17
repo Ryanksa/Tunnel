@@ -1,10 +1,10 @@
 import { redirect, fail } from "@sveltejs/kit";
+import type { Actions } from "@sveltejs/kit";
 import { client } from "$lib/server/database";
 import type { Tunnel } from "$lib/server/database";
 import { generateId, isExpired } from "$lib/server/utils";
 
-/** @type {import('./$types').Actions} */
-export const actions = {
+export const actions: Actions = {
   create: async () => {
     const id = generateId();
 

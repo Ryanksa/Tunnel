@@ -1,15 +1,10 @@
 <script lang="ts">
-  import type { Message } from "$lib/server/database";
+  import type { PageData } from "./$types";
   import { onMount } from "svelte";
   import CopyIcon from "$lib/icons/CopyIcon.svelte";
   import XIcon from "$lib/icons/XIcon.svelte";
 
-  /** @type {import('./$types').PageData} */
-  export let data: {
-    id: string;
-    created: Date;
-    messages: Message[];
-  };
+  export let data: PageData;
 
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
