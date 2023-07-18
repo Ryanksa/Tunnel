@@ -13,12 +13,13 @@ export const actions: Actions = {
 
     throw redirect(303, `/${id}`);
   },
+
   join: async ({ request }) => {
     const data = await request.formData();
     const id = data.get("id")?.toString();
 
     if (!id) {
-      return fail(400, { id, missing: true });
+      throw redirect(303, "/");
     }
 
     const conn = client.connection();
@@ -27,12 +28,12 @@ export const actions: Actions = {
       [id]
     );
     if (results.size === 0) {
-      return fail(400, { id, incorrect: true });
+      throw redirect(303, "/");
     }
 
     const tunnel = results.rows[0] as Tunnel;
     if (isExpired(tunnel)) {
-      return fail(400, { id, incorrect: true });
+      throw redirect(303, "/");
     }
 
     throw redirect(303, `/${tunnel.id}`);

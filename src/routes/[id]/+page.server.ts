@@ -1,5 +1,4 @@
-import { error, fail, redirect } from "@sveltejs/kit";
-import type { Actions } from "@sveltejs/kit";
+import { error } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types.js";
 import { client } from "$lib/server/database";
 import type { Message } from "$lib/server/database";
@@ -42,28 +41,5 @@ export const load = (async ({ params }) => {
     messages: results[1].rows as Message[],
   };
 }) satisfies PageServerLoad;
-
-export const actions: Actions = {
-  send: async ({ request, params }) => {
-    const data = await request.formData();
-    const content = data.get("content")?.toString();
-
-    if (!content) {
-      return fail(400, { content, missing: true });
-    }
-
-    const conn = client.connection();
-    await conn.execute(
-      "INSERT INTO messages (content, tunnel_id) VALUES (?, ?)",
-      [content, params.id]
-    );
-  },
-  close: async ({ params }) => {
-    const conn = client.connection();
-    await conn.execute("DELETE FROM messages WHERE tunnel_id = ?", [params.id]);
-    await conn.execute("DELETE FROM tunnels WHERE id = ?", [params.id]);
-    throw redirect(303, "/");
-  },
-};
 
 export const prerender = false;

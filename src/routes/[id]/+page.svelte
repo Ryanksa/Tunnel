@@ -34,7 +34,7 @@
 <div
   class="max-w-2xl m-4 sm:m-12 sm:mx-auto p-4 sm:p-8 flex flex-col items-center gap-4 bg-base-200/25 rounded-3xl relative"
 >
-  <form method="POST" action="?/close">
+  <form method="POST" action="/actions/{data.id}?/close">
     <button class="btn btn-circle absolute top-4 right-4 btn-sm sm:btn-md">
       <XIcon size={18} color="white" />
     </button>
@@ -48,7 +48,7 @@
   <form
     class="w-full flex flex-row gap-2 items-center justify-center p-4"
     method="POST"
-    action="?/send"
+    action="/actions/{data.id}?/send"
   >
     <input
       name="content"
