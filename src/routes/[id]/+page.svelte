@@ -3,6 +3,7 @@
   import { onMount } from "svelte";
   import CopyIcon from "$lib/icons/CopyIcon.svelte";
   import XIcon from "$lib/icons/XIcon.svelte";
+  import { enhance } from "$app/forms";
 
   export let data: PageData;
 
@@ -39,7 +40,6 @@
       <XIcon size={18} color="white" />
     </button>
   </form>
-
   <h1
     class="text-5xl text-extrabold tracking-widest p-4 bg-secondary text-neutral rounded-3xl font-mono"
   >
@@ -49,6 +49,9 @@
     class="w-full flex flex-row gap-2 items-center justify-center p-4"
     method="POST"
     action="/actions/{data.id}?/send"
+    use:enhance={({ formElement }) => {
+      formElement.reset();
+    }}
   >
     <input
       name="content"
@@ -58,8 +61,7 @@
     />
     <button class="btn btn-md lg:btn-lg">Send</button>
   </form>
-
-  <div class="w-full p-4 flex flex-col gap-4">
+  <div class="w-full px-4 flex flex-col gap-4">
     {#each data.messages as message, idx (message.id)}
       <div
         class="flex flex-row gap-2 items-center slide-in"
