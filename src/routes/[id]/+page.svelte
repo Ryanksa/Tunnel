@@ -30,7 +30,7 @@
 </script>
 
 <svelte:head>
-  <title>{data.id}</title>
+  <title>{data.id.toUpperCase()}</title>
 </svelte:head>
 <div
   class="max-w-2xl m-4 sm:m-12 sm:mx-auto p-4 sm:p-8 flex flex-col items-center gap-4 bg-base-200/25 rounded-3xl relative"
@@ -41,7 +41,7 @@
     </button>
   </form>
   <h1
-    class="text-5xl text-extrabold tracking-widest p-4 bg-secondary text-neutral rounded-3xl font-mono"
+    class="text-5xl text-extrabold tracking-widest p-4 bg-secondary text-neutral rounded-3xl font-mono uppercase"
   >
     {data.id}
   </h1>
