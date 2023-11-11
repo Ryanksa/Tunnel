@@ -17,6 +17,7 @@
         type="text"
         placeholder="Enter ID"
         class="input input-bordered input-lg w-full"
+        autofocus
       />
       <button class="btn btn-lg btn-neutral">Join</button>
     </form>
