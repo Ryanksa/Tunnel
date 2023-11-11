@@ -1,4 +1,4 @@
-import { redirect, fail } from "@sveltejs/kit";
+import { redirect } from "@sveltejs/kit";
 import type { Actions } from "@sveltejs/kit";
 import { client } from "$lib/server/database";
 import type { Tunnel } from "$lib/server/database";

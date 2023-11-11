@@ -41,7 +41,7 @@
     </button>
   </form>
   <h1
-    class="text-5xl text-extrabold tracking-widest p-4 bg-secondary text-neutral rounded-3xl font-mono uppercase"
+    class="text-5xl text-extrabold tracking-widest p-4 bg-neutral rounded-3xl font-mono uppercase"
   >
     {data.id}
   </h1>
