@@ -25,6 +25,6 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@planetscale/database": "^1.8.0"
+		"@neondatabase/serverless": "^0.9.1"
 	}
 }

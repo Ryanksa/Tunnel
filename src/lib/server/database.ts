@@ -1,19 +1,15 @@
-import { Client } from "@planetscale/database";
-import { DATABASE_HOST, DATABASE_USERNAME, DATABASE_PASSWORD } from "$env/static/private";
+import { neon } from "@neondatabase/serverless";
+import { DATABASE_URL } from "$env/static/private";
 
-export const client = new Client({
-  host: DATABASE_HOST,
-  username: DATABASE_USERNAME,
-  password: DATABASE_PASSWORD,
-});
+export const sql = () => {
+  return neon(DATABASE_URL);
+};
 
 /**
-  +---------+------------+------+-----+-------------------+-------------------+
-  | Field   | Type       | Null | Key | Default           | Extra             |
-  +---------+------------+------+-----+-------------------+-------------------+
-  | id      | varchar(6) | NO   | PRI | NULL              |                   |
-  | created | datetime   | NO   |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED |
-  +---------+------------+------+-----+-------------------+-------------------+
+  CREATE TABLE tunnels (
+    id varchar(6) PRIMARY KEY, 
+    created timestamp DEFAULT CURRENT_TIMESTAMP
+  );
  */
 export type Tunnel = {
   id: string;
@@ -21,13 +17,11 @@ export type Tunnel = {
 };
 
 /**
-  +-----------+------------+------+-----+---------+----------------+
-  | Field     | Type       | Null | Key | Default | Extra          |
-  +-----------+------------+------+-----+---------+----------------+
-  | id        | int        | NO   | PRI | NULL    | auto_increment |
-  | content   | text       | NO   |     | NULL    |                |
-  | tunnel_id | varchar(6) | NO   | MUL | NULL    |                |
-  +-----------+------------+------+-----+---------+----------------+
+  CREATE TABLE messages (
+    id SERIAL PRIMARY KEY,
+    content TEXT,
+    tunnel_id varchar(6) REFERENCES tunnels(id)
+  );
  */
 export type Message = {
   id: number;

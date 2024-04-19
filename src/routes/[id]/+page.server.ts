@@ -1,44 +1,37 @@
 import { error } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types.js";
-import { client } from "$lib/server/database";
+import { sql } from "$lib/server/database";
 import type { Message } from "$lib/server/database";
-import { EXPIRY_SEC } from "$lib/server/utils";
 
 export const load = (async ({ params }) => {
-  const conn = client.connection();
-
-  const tunnelQuery = conn.execute(
-    `
+  const tunnelQuery = sql()`
     SELECT created
     FROM tunnels
-    WHERE id = ?
-    AND created >= NOW() - INTERVAL ? SECOND
-    `,
-    [params.id, EXPIRY_SEC]
-  );
+    WHERE id = ${params.id}
+    AND created >= CURRENT_TIMESTAMP - INTERVAL '60 seconds'
+  `;
 
-  const messageQuery = conn.execute(
-    `
+  const messageQuery = sql()`
     SELECT id, content
     FROM messages
-    WHERE tunnel_id = ?
+    WHERE tunnel_id = ${params.id}
     ORDER BY id DESC
-    `,
-    [params.id]
-  );
+  `;
 
-  const results = await Promise.all([tunnelQuery, messageQuery]);
+  const [tunnelResults, messageResults] = await Promise.all([
+    tunnelQuery,
+    messageQuery,
+  ]);
 
-  if (results[0].size === 0) {
+  if (tunnelResults.length === 0) {
     throw error(404, "Not found");
   }
 
   return {
     id: params.id,
-    // @ts-ignore
-    created: new Date(results[0].rows[0].created + "Z"),
+    created: new Date(tunnelResults[0].created + "Z"),
     // these messages don't have the tunnel_id field
-    messages: results[1].rows as Message[],
+    messages: messageResults as Message[],
   };
 }) satisfies PageServerLoad;
 

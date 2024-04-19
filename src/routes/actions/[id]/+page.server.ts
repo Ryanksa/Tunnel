@@ -1,6 +1,6 @@
 import { redirect, fail } from "@sveltejs/kit";
 import type { Actions } from "@sveltejs/kit";
-import { client } from "$lib/server/database";
+import { sql } from "$lib/server/database";
 
 export const actions: Actions = {
   send: async ({ request, params }) => {
@@ -11,11 +11,7 @@ export const actions: Actions = {
       throw redirect(303, `/${params.id}`);
     }
 
-    const conn = client.connection();
-    await conn.execute(
-      "INSERT INTO messages (content, tunnel_id) VALUES (?, ?)",
-      [content, params.id]
-    );
+    await sql()`INSERT INTO messages (content, tunnel_id) VALUES (${content}, ${params.id})`;
 
     throw redirect(303, `/${params.id}`);
   },
