@@ -4,7 +4,9 @@
 <div class="h-screen grid place-items-center p-4">
   <div class="flex flex-col w-full border-opacity-50 max-w-sm">
     <form method="POST" action="/actions?/create">
-      <button class="btn btn-lg w-full btn-neutral">Create Tunnel</button>
+      <button class="btn btn-lg w-full btn-neutral tracking-widest">
+        Create Tunnel
+      </button>
     </form>
     <div class="divider">OR</div>
     <form
@@ -19,7 +21,7 @@
         class="input input-bordered input-lg w-full"
         autofocus
       />
-      <button class="btn btn-lg btn-neutral">Join</button>
+      <button class="btn btn-lg btn-neutral tracking-widest">Join</button>
     </form>
   </div>
 </div>

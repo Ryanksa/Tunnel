@@ -1,15 +1,11 @@
 <script lang="ts">
   import type { PageData } from "./$types";
   import { onMount } from "svelte";
-  import CopyIcon from "$lib/icons/CopyIcon.svelte";
-  import XIcon from "$lib/icons/XIcon.svelte";
+  import CopyButton from "$lib/components/CopyButton.svelte";
+  import XIcon from "$lib/components/XIcon.svelte";
   import { enhance } from "$app/forms";
 
   export let data: PageData;
-
-  const copyToClipboard = (text: string) => {
-    navigator.clipboard.writeText(text);
-  };
 
   let countdown = -1;
   onMount(() => {
@@ -59,7 +55,7 @@
       class="input input-bordered w-full input-md lg:input-lg"
       autofocus
     />
-    <button class="btn btn-md lg:btn-lg">Send</button>
+    <button class="btn btn-md lg:btn-lg tracking-widest">Send</button>
   </form>
   <div class="w-full px-4 flex flex-col gap-4">
     {#each data.messages as message, idx (message.id)}
@@ -68,12 +64,7 @@
         style="--delay:{idx * 30}ms;"
       >
         <p class="px-4 py-2 rounded-2xl bg-slate-300/25">{message.content}</p>
-        <button
-          class="btn btn-ghost btn-square btn-xs"
-          on:click={() => copyToClipboard(message.content)}
-        >
-          <CopyIcon size={15} color="white" />
-        </button>
+        <CopyButton content={message.content} />
       </div>
     {/each}
   </div>

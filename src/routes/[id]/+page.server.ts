@@ -12,7 +12,7 @@ export const load = (async ({ params }) => {
   `;
 
   const messageQuery = sql()`
-    SELECT id, content
+    SELECT *
     FROM messages
     WHERE tunnel_id = ${params.id}
     ORDER BY id DESC
@@ -30,7 +30,6 @@ export const load = (async ({ params }) => {
   return {
     id: params.id,
     created: new Date(tunnelResults[0].created + "Z"),
-    // these messages don't have the tunnel_id field
     messages: messageResults as Message[],
   };
 }) satisfies PageServerLoad;
