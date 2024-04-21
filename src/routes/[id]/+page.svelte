@@ -4,10 +4,13 @@
   import CopyButton from "$lib/components/CopyButton.svelte";
   import XIcon from "$lib/components/XIcon.svelte";
   import { enhance } from "$app/forms";
+  import FileSelect from "$lib/components/FileSelect.svelte";
 
   export let data: PageData;
 
+  let selectedFile: File | null = null;
   let countdown = -1;
+
   onMount(() => {
     countdown = Math.round(60 - (Date.now() - data.created.getTime()) / 1000);
     const interval = setInterval(() => {
@@ -42,13 +45,26 @@
     {data.id}
   </h1>
   <form
-    class="w-full flex flex-row gap-2 items-center justify-center p-4"
+    class="w-full flex flex-row gap-2 items-center justify-center p-4 relative"
     method="POST"
     action="/actions/{data.id}?/send"
     use:enhance={({ formElement }) => {
       formElement.reset();
     }}
   >
+    {#if selectedFile}
+      <div
+        class="badge badge-primary gap-2 text-xs absolute left-6 top-2 overflow-hidden"
+      >
+        <button
+          class="btn btn-circle btn-ghost btn-xs"
+          on:click={() => (selectedFile = null)}
+        >
+          <XIcon size={15} color="white" />
+        </button>
+        <h3 class="text-primary-content">{selectedFile.name}</h3>
+      </div>
+    {/if}
     <input
       name="content"
       type="text"
@@ -56,6 +72,9 @@
       autofocus
     />
     <button class="btn btn-md lg:btn-lg tracking-widest">Send</button>
+    <div class="flex-shrink-0">
+      <FileSelect onSelect={(file) => (selectedFile = file)} />
+    </div>
   </form>
   <div class="w-full px-4 flex flex-col gap-4">
     {#each data.messages as message, idx (message.id)}
