@@ -1,5 +1,5 @@
 <script lang="ts">
-  import CopyIcon from "$lib/components/CopyIcon.svelte";
+  import CopyIcon from "$lib/icons/CopyIcon.svelte";
 
   export let content: string;
 

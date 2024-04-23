@@ -1,17 +1,37 @@
-import { redirect, fail } from "@sveltejs/kit";
+import { redirect } from "@sveltejs/kit";
 import type { Actions } from "@sveltejs/kit";
 import { sql } from "$lib/server/database";
+import { utapi, type FileEsque } from "$lib/server/uploadthing";
+import { v4 as uuidv4 } from "uuid";
 
 export const actions: Actions = {
   send: async ({ request, params }) => {
     const data = await request.formData();
-    const content = data.get("content")?.toString();
+
+    let file = data.get("file") as FileEsque | null;
+    if (file?.size === 0) {
+      file = null;
+    }
+
+    let fileId;
+    if (file) {
+      fileId = uuidv4();
+    }
+
+    let content = data.get("content")?.toString();
+    if (!content) {
+      content = file?.name;
+    }
 
     if (!content) {
       throw redirect(303, `/${params.id}`);
     }
 
-    await sql()`INSERT INTO messages (content, tunnel_id) VALUES (${content}, ${params.id})`;
+    await sql()`INSERT INTO messages (content, tunnel_id, file_id) VALUES (${content}, ${params.id}, ${fileId})`;
+    if (file) {
+      file.customId = fileId;
+      utapi.uploadFiles([file]);
+    }
 
     throw redirect(303, `/${params.id}`);
   },

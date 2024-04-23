@@ -13,6 +13,7 @@
 		"@sveltejs/adapter-auto": "^2.0.0",
 		"@sveltejs/adapter-vercel": "^3.0.2",
 		"@sveltejs/kit": "^1.20.4",
+		"@types/uuid": "^9.0.8",
 		"autoprefixer": "^10.4.14",
 		"daisyui": "^4.10.2",
 		"postcss": "^8.4.25",
@@ -25,6 +26,9 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@neondatabase/serverless": "^0.9.1"
+		"@neondatabase/serverless": "^0.9.1",
+		"@uploadthing/svelte": "^6.4.1",
+		"uploadthing": "^6.9.0",
+		"uuid": "^9.0.1"
 	}
 }

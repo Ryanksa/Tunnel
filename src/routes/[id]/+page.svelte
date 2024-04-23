@@ -2,9 +2,10 @@
   import type { PageData } from "./$types";
   import { onMount } from "svelte";
   import CopyButton from "$lib/components/CopyButton.svelte";
-  import XIcon from "$lib/components/XIcon.svelte";
+  import XIcon from "$lib/icons/XIcon.svelte";
   import { enhance } from "$app/forms";
   import FileSelect from "$lib/components/FileSelect.svelte";
+  import FileIcon from "$lib/icons/FileIcon.svelte";
 
   export let data: PageData;
 
@@ -49,20 +50,18 @@
     method="POST"
     action="/actions/{data.id}?/send"
     use:enhance={({ formElement }) => {
+      selectedFile = null;
       formElement.reset();
     }}
   >
     {#if selectedFile}
       <div
-        class="badge badge-primary gap-2 text-xs absolute left-6 top-2 overflow-hidden"
+        class="badge badge-base gap-2 text-xs absolute left-6 top-1 border border-slate-600"
       >
-        <button
-          class="btn btn-circle btn-ghost btn-xs"
-          on:click={() => (selectedFile = null)}
-        >
+        <div class="cursor-pointer" on:click={() => (selectedFile = null)}>
           <XIcon size={15} color="white" />
-        </button>
-        <h3 class="text-primary-content">{selectedFile.name}</h3>
+        </div>
+        <h3>{selectedFile.name}</h3>
       </div>
     {/if}
     <input
@@ -73,7 +72,7 @@
     />
     <button class="btn btn-md lg:btn-lg tracking-widest">Send</button>
     <div class="flex-shrink-0">
-      <FileSelect onSelect={(file) => (selectedFile = file)} />
+      <FileSelect name="file" onSelect={(file) => (selectedFile = file)} />
     </div>
   </form>
   <div class="w-full px-4 flex flex-col gap-4">
@@ -82,7 +81,17 @@
         class="flex flex-row gap-2 items-center slide-in"
         style="--delay:{idx * 30}ms;"
       >
-        <p class="px-4 py-2 rounded-2xl bg-slate-300/25">{message.content}</p>
+        <p class="relative px-4 py-2 rounded-2xl bg-slate-300/25">
+          {message.content}
+          {#if message.file_id}
+            <a
+              href={`/api/file/${message.file_id}`}
+              class="absolute top-0 left-0"
+            >
+              <FileIcon size={15} color="white" />
+            </a>
+          {/if}
+        </p>
         <CopyButton content={message.content} />
       </div>
     {/each}

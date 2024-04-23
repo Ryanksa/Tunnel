@@ -20,11 +20,13 @@ export type Tunnel = {
   CREATE TABLE messages (
     id SERIAL PRIMARY KEY,
     content TEXT,
-    tunnel_id varchar(6) REFERENCES tunnels(id)
+    tunnel_id varchar(6) REFERENCES tunnels(id),
+    file_id varchar(36) NULL
   );
  */
 export type Message = {
   id: number;
   content: string;
   tunnel_id: string;
+  file_id?: string;
 };

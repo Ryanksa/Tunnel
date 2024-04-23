@@ -1,7 +1,8 @@
 <script lang="ts">
-  import FileUploadIcon from "$lib/components/FileUploadIcon.svelte";
+  import FileUploadIcon from "$lib/icons/FileUploadIcon.svelte";
 
-  export let onSelect: (file: File) => void;
+  export let name: string | null = null;
+  export let onSelect: (file: File | null) => void;
 </script>
 
 <div
@@ -9,12 +10,14 @@
 >
   <FileUploadIcon size={18} color="white" />
   <input
+    {name}
     type="file"
     class="absolute w-full h-full opacity-0"
     on:click={(event) => {
       if (event.target) {
         // @ts-ignore
         event.target.value = "";
+        onSelect(null);
       }
     }}
     on:change={(event) => {
