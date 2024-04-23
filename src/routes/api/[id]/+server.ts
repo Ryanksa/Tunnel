@@ -6,9 +6,10 @@ export const DELETE = (async ({ params }) => {
   const results =
     await sql()`SELECT file_id FROM messages WHERE tunnel_id = ${params.id} AND file_id IS NOT NULL`;
   const fileIds = results.map((result) => result.file_id as string);
-  utapi.deleteFiles(fileIds);
+  await utapi.deleteFiles(fileIds);
 
   await sql()`DELETE FROM messages WHERE tunnel_id = ${params.id}`;
   await sql()`DELETE FROM tunnels WHERE id = ${params.id}`;
+
   return new Response();
 }) satisfies RequestHandler;

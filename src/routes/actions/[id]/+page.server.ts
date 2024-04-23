@@ -30,7 +30,7 @@ export const actions: Actions = {
     await sql()`INSERT INTO messages (content, tunnel_id, file_id) VALUES (${content}, ${params.id}, ${fileId})`;
     if (file) {
       file.customId = fileId;
-      utapi.uploadFiles([file]);
+      await utapi.uploadFiles([file]);
     }
 
     throw redirect(303, `/${params.id}`);
