@@ -15,7 +15,7 @@ export const actions: Actions = {
 
   join: async ({ request }) => {
     const data = await request.formData();
-    const id = data.get("id")?.toString();
+    const id = data.get("id")?.toString().toUpperCase();
 
     if (!id) {
       throw redirect(303, "/");

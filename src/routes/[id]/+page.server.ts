@@ -4,17 +4,18 @@ import { sql } from "$lib/server/database";
 import type { Message } from "$lib/server/database";
 
 export const load = (async ({ params }) => {
+  const id = params.id.toUpperCase();
   const tunnelQuery = sql()`
     SELECT created
     FROM tunnels
-    WHERE id = ${params.id}
+    WHERE id = ${id}
     AND created >= CURRENT_TIMESTAMP - INTERVAL '60 seconds'
   `;
 
   const messageQuery = sql()`
     SELECT *
     FROM messages
-    WHERE tunnel_id = ${params.id}
+    WHERE tunnel_id = ${id}
     ORDER BY id DESC
   `;
 
@@ -28,7 +29,7 @@ export const load = (async ({ params }) => {
   }
 
   return {
-    id: params.id,
+    id: id,
     created: new Date(tunnelResults[0].created + "Z"),
     messages: messageResults as Message[],
   };
