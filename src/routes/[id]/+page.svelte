@@ -9,6 +9,7 @@
 
   export let data: PageData;
 
+  const id = data.id.toUpperCase();
   let selectedFile: File | null = null;
   let countdown = -1;
 
@@ -19,7 +20,7 @@
       if (countdown <= 0) {
         countdown = 0;
         clearInterval(interval);
-        fetch(`/api/${data.id}`, { method: "DELETE" });
+        fetch(`/api/${id}`, { method: "DELETE" });
       }
     }, 1000);
 
@@ -30,12 +31,12 @@
 </script>
 
 <svelte:head>
-  <title>{data.id.toUpperCase()}</title>
+  <title>{id}</title>
 </svelte:head>
 <div
   class="max-w-2xl m-4 sm:m-12 sm:mx-auto p-4 sm:p-8 flex flex-col items-center gap-4 bg-base-200/25 rounded-3xl relative"
 >
-  <form method="POST" action="/actions/{data.id}?/close">
+  <form method="POST" action="/actions/{id}?/close">
     <button class="btn btn-circle absolute top-4 right-4 btn-sm sm:btn-md">
       <XIcon size={18} color="white" />
     </button>
@@ -43,12 +44,12 @@
   <h1
     class="text-5xl text-extrabold tracking-widest p-4 bg-neutral rounded-3xl font-mono uppercase"
   >
-    {data.id}
+    {id}
   </h1>
   <form
     class="w-full flex flex-row gap-2 items-center justify-center p-4 relative"
     method="POST"
-    action="/actions/{data.id}?/send"
+    action="/actions/{id}?/send"
     use:enhance={({ formElement }) => {
       selectedFile = null;
       formElement.reset();

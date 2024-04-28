@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from "uuid";
 
 export const actions: Actions = {
   send: async ({ request, params }) => {
+    const id = params.id?.toUpperCase();
     const data = await request.formData();
 
     let file = data.get("file") as FileEsque | null;
@@ -24,16 +25,16 @@ export const actions: Actions = {
     }
 
     if (!content) {
-      throw redirect(303, `/${params.id}`);
+      throw redirect(303, `/${id}`);
     }
 
-    await sql()`INSERT INTO messages (content, tunnel_id, file_id) VALUES (${content}, ${params.id}, ${fileId})`;
+    await sql()`INSERT INTO messages (content, tunnel_id, file_id) VALUES (${content}, ${id}, ${fileId})`;
     if (file) {
       file.customId = fileId;
       await utapi.uploadFiles([file]);
     }
 
-    throw redirect(303, `/${params.id}`);
+    throw redirect(303, `/${id}`);
   },
 
   close: async ({ params, fetch }) => {
